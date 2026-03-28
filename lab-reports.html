@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Oasis Healthcare lab report tracking and download page for patients.">
+<title>Lab Report Status | Oasis Healthcare</title>
+<link rel="icon" type="image/jpeg" href="oasis-healthcare-logo.jpeg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;1,9..144,300;1,9..144,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+:root{
+  --bg:#f4f8fc;
+  --off:#edf4fb;
+  --panel:#ffffff;
+  --cream:#e7f0fa;
+  --border:#d7e3f0;
+  --border-dk:#b8cbe0;
+  --text:#142638;
+  --mid:#4f6478;
+  --muted:#7f93a8;
+  --blue:#1E7EC8;
+  --blue-dk:#155f99;
+  --blue-soft:#eaf4fc;
+  --logo-red:#E31E2F;
+  --wa:#25D366;
+  --serif:'Fraunces',Georgia,serif;
+  --sans:'DM Sans',system-ui,sans-serif;
+  --ease:cubic-bezier(0.16,1,0.3,1);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--sans);background:var(--bg);color:var(--text);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+a{text-decoration:none;color:inherit}
+button,input,select{font:inherit}
+#tnav{position:fixed;top:0;left:0;right:0;z-index:100;height:72px;background:rgba(244,248,252,.92);backdrop-filter:blur(14px);border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 24px}
+.tn-inner{width:100%;max-width:1320px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:16px}
+.tn-logo{display:flex;align-items:center;gap:12px;cursor:pointer;text-decoration:none}
+.tn-icon{width:58px;height:44px;border-radius:14px;overflow:hidden;background:#fff;border:1px solid rgba(30,126,200,.14);box-shadow:0 10px 24px rgba(20,38,56,.06);display:flex;align-items:center;justify-content:center;flex-shrink:0;padding:2px 4px}
+.tn-name{font-size:18px;font-weight:600;letter-spacing:-.02em;line-height:1.05}.tn-name .bl{color:var(--blue)}.tn-name .rd{color:var(--logo-red)}
+.tn-icon img{width:100%;height:100%;object-fit:contain;display:block}.tn-tag{font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-left:2px}
+.tn-links{display:flex;gap:26px;list-style:none;align-items:center}.tn-links a{font-size:13px;color:var(--mid);transition:color .2s}.tn-links a:hover,.tn-links a.active{color:var(--text)}
+.tn-right{display:flex;gap:10px;align-items:center}.pill-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 16px;border-radius:999px;border:1px solid var(--border-dk);background:#fff;color:var(--mid);font-size:13px;transition:all .22s}.pill-btn:hover{transform:translateY(-1px);border-color:var(--blue)}
+.pill-btn.primary{background:var(--blue);border-color:var(--blue);color:#fff}.pill-btn.primary:hover{background:var(--blue-dk)}
+main{padding-top:72px}
+.hero{position:relative;overflow:hidden;min-height:70vh;padding:82px 24px 58px;border-bottom:1px solid var(--border)}
+.hero::before{content:'';position:absolute;inset:0;background:linear-gradient(120deg,rgba(244,248,252,.98) 0%,rgba(244,248,252,.88) 42%,rgba(244,248,252,.22) 100%);z-index:1}
+.hero::after{content:'';position:absolute;right:-90px;top:80px;width:360px;height:360px;border-radius:50%;background:radial-gradient(circle,rgba(30,126,200,.16) 0%,rgba(30,126,200,.06) 42%,transparent 72%);filter:blur(1px);animation:orbFloat 10s ease-in-out infinite alternate}
+.hero-bg{position:absolute;inset:0;background-size:cover;background-position:center;transform:scale(1.04);animation:bgFloat 18s ease-in-out infinite alternate}
+.hero-shell{position:relative;z-index:2;max-width:1320px;margin:0 auto;display:grid;grid-template-columns:minmax(0,1.15fr) minmax(300px,.85fr);gap:28px;align-items:end}
+.hero-copy{max-width:760px;padding:18px 0}
+.hero-kicker{display:inline-flex;align-items:center;gap:8px;padding:8px 14px;border-radius:999px;background:rgba(30,126,200,.08);border:1px solid rgba(30,126,200,.16);color:var(--blue);font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;margin-bottom:24px}
+.hero-dot{width:7px;height:7px;border-radius:50%;background:var(--blue);animation:pulse 2.1s ease-in-out infinite}
+.hero h1{font-family:var(--serif);font-size:clamp(42px,6vw,82px);font-weight:300;line-height:1.03;letter-spacing:-.035em;margin-bottom:20px}
+.hero p{font-size:18px;line-height:1.78;color:var(--mid);max-width:60ch}
+.hero-actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:28px}
+.hero-panel{background:rgba(255,255,255,.78);border:1px solid rgba(255,255,255,.74);backdrop-filter:blur(14px);border-radius:28px;padding:24px;box-shadow:0 22px 40px rgba(20,38,56,.08)}
+.hero-panel h3{font-size:14px;text-transform:uppercase;letter-spacing:.12em;color:var(--blue);margin-bottom:12px}
+.hero-panel .big{font-family:var(--serif);font-size:34px;line-height:1.05;margin-bottom:10px}
+.hero-panel p{font-size:14px;line-height:1.75;color:var(--mid)}
+.hero-mini-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:18px}
+.hero-mini{padding:14px 16px;border-radius:18px;background:rgba(234,244,252,.85);border:1px solid rgba(30,126,200,.12)}
+.hero-mini small{display:block;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:7px}.hero-mini strong{font-size:18px;color:var(--text)}
+.wrap{max-width:1320px;margin:0 auto;padding:0 24px}
+.sec{padding:86px 0;border-bottom:1px solid var(--border)}
+.eyebrow{display:inline-block;font-size:11px;font-weight:700;letter-spacing:.13em;text-transform:uppercase;color:var(--blue);margin-bottom:16px}
+.sec-head{display:flex;justify-content:space-between;gap:26px;align-items:end;flex-wrap:wrap;margin-bottom:36px}
+.sec-head h2{font-family:var(--serif);font-weight:300;font-size:clamp(34px,4.4vw,60px);line-height:1.08;letter-spacing:-.03em}.sec-head p{max-width:560px;font-size:17px;line-height:1.76;color:var(--mid)}
+.card-grid{display:grid;grid-template-columns:1.06fr .94fr;gap:22px}
+.card{position:relative;overflow:hidden;background:var(--panel);border:1px solid var(--border);border-radius:28px;padding:28px;box-shadow:0 18px 40px rgba(20,38,56,.05)}
+.card::before{content:'';position:absolute;inset:auto -40px -70px auto;width:220px;height:220px;border-radius:50%;background:radial-gradient(circle,rgba(30,126,200,.12),transparent 68%);pointer-events:none}
+.card h3{font-size:18px;margin-bottom:18px}
+.field-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.field{display:flex;flex-direction:column;gap:8px}.field.full{grid-column:1/-1}.field label{font-size:13px;color:var(--mid);font-weight:500}.field input,.field select{height:50px;padding:0 14px;border-radius:15px;border:1px solid var(--border);background:#fff;color:var(--text);outline:none;transition:border-color .2s,box-shadow .2s}
+.field input:focus,.field select:focus{border-color:rgba(30,126,200,.45);box-shadow:0 0 0 4px rgba(30,126,200,.08)}
+.btn-row{display:flex;gap:12px;flex-wrap:wrap;margin-top:22px}.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;padding:13px 20px;border-radius:999px;border:1px solid var(--border-dk);background:#fff;color:var(--mid);cursor:pointer;transition:all .22s}.btn.primary{background:var(--blue);border-color:var(--blue);color:#fff}.btn:hover{transform:translateY(-1px)}.btn.primary:hover{background:var(--blue-dk)}
+.result-hero{display:flex;align-items:flex-start;justify-content:space-between;gap:14px;margin-bottom:20px}.score{font-family:var(--serif);font-size:46px;line-height:.95;letter-spacing:-.04em}
+.status{display:inline-flex;align-items:center;gap:8px;padding:9px 14px;border-radius:999px;background:var(--blue-soft);border:1px solid rgba(30,126,200,.14);font-size:12px;font-weight:700;color:var(--blue);text-transform:uppercase;letter-spacing:.08em}
+.note{font-size:13px;color:var(--muted);line-height:1.7;margin-top:14px}
+.info-list{display:grid;gap:12px;margin-top:18px}.info-item{display:flex;justify-content:space-between;gap:16px;padding:14px 16px;border-radius:18px;background:var(--off);border:1px solid rgba(30,126,200,.08)}.info-item span{color:var(--mid);font-size:14px}.info-item strong{font-size:15px;text-align:right}
+.timeline{display:grid;gap:12px;margin-top:16px}.step{display:flex;align-items:flex-start;gap:14px;padding:16px 18px;border-radius:20px;background:var(--off);border:1px solid rgba(30,126,200,.08)}.step .dot{width:14px;height:14px;border-radius:50%;margin-top:5px;background:#bfdcf2;box-shadow:0 0 0 6px rgba(30,126,200,.08)}.step.active{background:#fff}.step.active .dot{background:var(--blue)}.step.done .dot{background:#66aee0}
+.demo-pills{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}.demo-pill{padding:10px 14px;border-radius:999px;background:#fff;border:1px solid var(--border);font-size:13px;color:var(--mid);cursor:pointer;transition:all .2s}.demo-pill:hover{border-color:var(--blue);color:var(--text)}
+.quick-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin-top:24px}.quick-tile{padding:16px 18px;border-radius:20px;background:linear-gradient(180deg,#fff 0%,#f6fbff 100%);border:1px solid var(--border)}.quick-tile small{display:block;font-size:11px;text-transform:uppercase;letter-spacing:.12em;color:var(--muted);margin-bottom:8px}.quick-tile strong{display:block;font-size:16px;line-height:1.45}
+.preview-card{margin-top:22px}
+.preview-head{display:flex;align-items:end;justify-content:space-between;gap:18px;flex-wrap:wrap;margin-bottom:20px}
+.preview-head h3{margin:0;font-size:28px;font-family:var(--serif);font-weight:300;letter-spacing:-.02em}
+.preview-head p{max-width:760px;color:var(--mid);line-height:1.75;font-size:15px}
+.preview-layout{display:grid;grid-template-columns:.95fr 1.05fr;gap:22px;align-items:start}
+.stack{display:grid;gap:14px}
+.subcard{background:linear-gradient(180deg,#fff 0%,#f6fbff 100%);border:1px solid var(--border);border-radius:24px;padding:22px}
+.subcard h4{font-size:16px;margin-bottom:14px}
+.meta-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px 14px}.meta-row{display:flex;justify-content:space-between;gap:12px;padding:10px 0;border-bottom:1px solid rgba(30,126,200,.09)}.meta-row:last-child{border-bottom:none}.meta-row span{font-size:13px;color:var(--mid)}.meta-row strong{font-size:14px;text-align:right}
+.table-wrap{overflow:auto}
+.result-table{width:100%;border-collapse:separate;border-spacing:0 10px}.result-table th{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);font-weight:700;text-align:left;padding:0 14px 4px}.result-table td{background:var(--off);padding:14px;border-top:1px solid rgba(30,126,200,.07);border-bottom:1px solid rgba(30,126,200,.07)}.result-table td:first-child{border-left:1px solid rgba(30,126,200,.07);border-radius:16px 0 0 16px;font-weight:600}.result-table td:last-child{border-right:1px solid rgba(30,126,200,.07);border-radius:0 16px 16px 0}.result-table td:nth-child(2),.result-table td:nth-child(3){white-space:nowrap}
+.chip-row{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}.chip{display:inline-flex;align-items:center;gap:8px;padding:9px 13px;border-radius:999px;background:var(--blue-soft);border:1px solid rgba(30,126,200,.12);font-size:12px;color:var(--blue);font-weight:700;text-transform:uppercase;letter-spacing:.06em}
+.pdf-shell{overflow:hidden;background:#fff;border:1px solid var(--border);border-radius:24px;box-shadow:0 16px 32px rgba(20,38,56,.05)}
+.pdf-bar{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:16px 18px;border-bottom:1px solid var(--border);background:linear-gradient(180deg,#ffffff 0%,#f8fbff 100%)}
+.pdf-bar strong{font-size:15px}.pdf-bar span{font-size:12px;color:var(--muted)}
+.pdf-actions{display:flex;gap:10px;flex-wrap:wrap}
+.mini-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 14px;border-radius:999px;border:1px solid var(--border-dk);background:#fff;color:var(--mid);font-size:13px;transition:all .2s}.mini-btn:hover{border-color:var(--blue);color:var(--text);transform:translateY(-1px)}
+.pdf-frame{width:100%;height:760px;border:0;background:#f0f5fb}
+.empty-state{padding:34px 18px;border-radius:20px;background:var(--off);border:1px dashed rgba(30,126,200,.16);color:var(--mid);line-height:1.8;font-size:15px}
+.soft-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}.soft-card{background:linear-gradient(180deg,#fff 0%,#f6fbff 100%);border:1px solid var(--border);border-radius:24px;padding:24px;box-shadow:0 14px 34px rgba(20,38,56,.04)}.soft-card i{width:46px;height:46px;border-radius:14px;background:var(--blue-soft);display:flex;align-items:center;justify-content:center;color:var(--blue);margin-bottom:16px}.soft-card h4{font-size:18px;margin-bottom:8px}.soft-card p{font-size:14px;line-height:1.75;color:var(--mid)}
+.strip{padding:14px 0;background:linear-gradient(90deg,var(--blue),var(--logo-red));overflow:hidden}.track{display:flex;width:max-content;animation:marq 26s linear infinite}.track span{white-space:nowrap;color:rgba(255,255,255,.92);text-transform:uppercase;letter-spacing:.08em;font-size:13px;padding:0 30px}
+.footer{padding:38px 24px;text-align:center;color:var(--muted);font-size:13px}
+.reveal{opacity:0;transform:translateY(26px);transition:opacity .7s var(--ease),transform .7s var(--ease)}.reveal.in{opacity:1;transform:none}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.45;transform:scale(.75)}}
+@keyframes orbFloat{0%{transform:translateY(0px)}100%{transform:translateY(18px)}}
+@keyframes bgFloat{0%{transform:scale(1.04) translate3d(0,0,0)}100%{transform:scale(1.08) translate3d(-8px,-10px,0)}}
+@keyframes marq{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+@media (max-width: 1150px){.hero-shell,.card-grid,.preview-layout{grid-template-columns:1fr}.quick-grid,.soft-grid{grid-template-columns:1fr 1fr}.tn-links{display:none}.pdf-frame{height:620px}}
+@media (max-width: 720px){#tnav{padding:0 14px}.tn-right .pill-btn:not(.primary){display:none}.hero{padding-inline:16px}.wrap{padding:0 16px}.field-grid,.soft-grid,.hero-mini-grid,.quick-grid,.meta-grid{grid-template-columns:1fr}.score{font-size:38px}.hero p{font-size:16px}.hero-panel{padding:20px}.pdf-frame{height:420px}.info-item,.meta-row{flex-direction:column;align-items:flex-start}.info-item strong,.meta-row strong{text-align:left}}
+
+
+/* MOBILE REFINEMENT PATCH */
+.tn-logo > div:last-child{min-width:0}
+.tn-name,.tn-tag{white-space:nowrap}
+
+@media (max-width:900px){
+  #tnav{padding:0 18px}
+  .tn-inner{gap:12px;min-width:0}
+  .tn-logo{gap:10px;min-width:0}
+  .tn-icon{width:50px;height:38px;border-radius:12px;padding:2px 3px}
+  .tn-name{font-size:16px}
+  .tn-tag{font-size:9px}
+  .fab-g{right:14px;bottom:18px}
+  .fab{width:46px;height:46px;font-size:18px}
+}
+
+@media (max-width:700px){
+  #tnav{height:64px;padding:0 14px}
+  .tn-inner{gap:10px;min-width:0}
+  .tn-logo{flex:1;max-width:calc(100% - 44px)}
+  .tn-icon{width:46px;height:34px;border-radius:10px}
+  .tn-name{font-size:15px;line-height:1.02}
+  .tn-tag{font-size:8px;letter-spacing:.1em}
+  .ham{padding:6px 0 6px 6px}
+  #mob{top:64px;padding:12px 18px 18px}
+  #mob a{font-size:15px;padding:12px 0}
+  #mc,main{padding-top:64px}
+
+  .hero-shell{
+    display:grid !important;
+    grid-template-columns:1fr !important;
+    gap:18px;
+    align-items:start;
+    min-height:auto;
+    padding:22px 18px 18px !important;
+    border-radius:24px;
+    margin-bottom:28px;
+  }
+  .hero-shell > *{min-width:0}
+  .hero-shell::before{background:linear-gradient(180deg,rgba(248,246,242,.98) 0%,rgba(248,246,242,.95) 32%,rgba(248,246,242,.82) 60%,rgba(248,246,242,.44) 100%)}
+  .hero-shell::after{width:210px;height:210px;right:-56px;top:-46px}
+  .hero-copy{max-width:none !important;width:100%}
+  .hero-pill,.hero-kicker{font-size:10px;margin-bottom:18px;padding:6px 11px;letter-spacing:.09em}
+  .hero-title,.hero h1{font-size:clamp(34px,11.5vw,50px);line-height:.98;letter-spacing:-.04em;margin-bottom:16px;max-width:11ch}
+  .hero-sub,.hero p{font-size:15px;line-height:1.68;margin-bottom:22px;max-width:none}
+  .hero-acts,.hero-actions{flex-direction:column;align-items:stretch;gap:10px;margin-top:22px}
+  .hero-acts .btn-grn,.hero-acts .btn-out,.hero-actions .pill-btn,.btn-row .btn,.pdf-actions .mini-btn{width:100%;justify-content:center}
+  .hero-info-card,.hero-panel{
+    position:relative !important;
+    inset:auto !important;
+    right:auto !important;
+    bottom:auto !important;
+    width:100% !important;
+    max-width:none !important;
+    margin-top:0 !important;
+    padding:18px 16px 16px !important;
+    border-radius:20px !important;
+  }
+  .hero-info-top{display:block}
+  .hero-info-icon{display:none}
+  .hero-info-v,.hero-panel .big{font-size:18px;line-height:1.15}
+  .hero-info-t{font-size:13px;line-height:1.6}
+  .hero-info-row{padding-top:12px;gap:8px}
+  .hero-chip{font-size:11px;padding:8px 10px}
+  .hero-stats{padding-top:26px}
+  .hstat-n{font-size:34px}
+
+  .sec{padding-top:64px;padding-bottom:64px}
+  .wrap{padding:0 16px}
+  .svc-hdr{margin-bottom:34px}
+  .svc-card{padding:24px 20px}
+  .tip-main,.tip-side-card,.t-card,.s-card,.ab-card,.ts-card,.form-c,.lb-card,.rp-card,.card,.soft-card,.pdf-shell,.dt-card,.dt-box,.dt-note,.dt-kpi{border-radius:20px}
+
+  .dt-hero{min-height:auto !important;padding-top:92px;padding-bottom:28px}
+  .dt-cnt{padding:0 18px}
+  .dt-meta{gap:8px;margin-bottom:14px;transform:none}
+  .dt-back,.dt-bdg{min-height:34px;padding:6px 10px;font-size:10px}
+  .dt-t{font-size:clamp(32px,10.8vw,44px);line-height:1.02;margin-bottom:12px;max-width:11ch}
+  .dt-s{font-size:15px;line-height:1.65;max-width:none}
+  .dt-body{padding:34px 18px 56px !important}
+  .dt-grid,.card-grid,.preview-layout{grid-template-columns:1fr !important;gap:18px}
+  .dt-kpis,.dt-card-grid,.quick-grid,.soft-grid,.hero-mini-grid,.field-grid,.meta-grid{grid-template-columns:1fr !important}
+  .dt-side{position:static;gap:12px}
+  .pdf-frame{height:420px}
+}
+
+@media (max-width:480px){
+  #tnav{padding:0 12px}
+  .tn-icon{width:42px;height:32px}
+  .tn-name{font-size:14px}
+  .tn-tag{display:none}
+  .hero-title,.hero h1{font-size:clamp(31px,11.2vw,42px);max-width:10ch}
+  .hero-sub,.hero p,.dt-s{font-size:14px}
+  .hero-pill,.hero-kicker,.dt-bdg,.dt-back{font-size:9px}
+  .hero-info-row{display:grid;grid-template-columns:1fr}
+  .hero-chip{width:100%;justify-content:flex-start}
+  .hero-acts .btn-grn,.hero-acts .btn-out,.hero-actions .pill-btn,.btn-row .btn,.pdf-actions .mini-btn{padding:13px 16px}
+  .fab-g{right:12px;bottom:14px;gap:9px}
+  .fab{width:44px;height:44px;font-size:17px}
+  .hero-panel,.hero-info-card,.card,.dt-card,.dt-box,.dt-note,.dt-kpi{padding:16px !important}
+}
+
+</style>
+</head>
+<body>
+<header id="tnav">
+  <div class="tn-inner">
+    <a class="tn-logo" href="index.html">
+      <div class="tn-icon"><img src="oasis-healthcare-logo.jpeg" alt="Oasis Healthcare logo"></div>
+      <div>
+        <div class="tn-name"><span class="bl">Oasis</span> <span class="rd">Healthcare</span></div>
+        <div class="tn-tag">Heal · Love · Care</div>
+      </div>
+    </a>
+    <ul class="tn-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="index.html#s-services">Services</a></li>
+      <li><a href="lab-reports.html" class="active">Lab Reports</a></li>
+      <li><a href="index.html#s-location">Location</a></li>
+    </ul>
+    <div class="tn-right">
+      <a class="pill-btn" href="tel:+919863984852"><i class="fas fa-phone"></i> Call</a>
+      <a class="pill-btn" href="bmi-calculator.html"><i class="fas fa-calculator"></i> BMI Tool</a>
+      <a class="pill-btn primary" href="index.html#s-contact">Book Visit</a>
+    </div>
+  </div>
+</header>
+<main>
+<section class="hero">
+  <div class="hero-bg" style="background-image:url('https://images.unsplash.com/photo-1579154204601-01588f351e67?w=1600&auto=format&fit=crop&q=80')"></div>
+  <div class="hero-shell">
+    <div class="hero-copy reveal">
+      <div class="hero-kicker"><span class="hero-dot"></span> Patient access</div>
+      <h1>Lab report status &amp; download</h1>
+      <p>Search by report ID and access code, preview the available report clearly, and open the PDF when it is ready.</p>
+      <div class="hero-actions">
+        <a class="pill-btn primary" href="#reports"><i class="fas fa-magnifying-glass"></i> Check now</a>
+        <a class="pill-btn" href="#report-preview-section"><i class="fas fa-file-medical"></i> Report preview</a>
+      </div>
+    </div>
+    <aside class="hero-panel reveal">
+      <h3>Report access</h3>
+      <div class="big">PDF preview</div>
+      <p>The uploaded thyroid report is built into this page with a clean result layout and a direct file preview for a smoother patient experience.</p>
+      <div class="hero-mini-grid">
+        <div class="hero-mini"><small>Report ID</small><strong>012409060091</strong></div>
+        <div class="hero-mini"><small>Access code</small><strong>0091</strong></div>
+      </div>
+    </aside>
+  </div>
+</section>
+
+<section class="sec" id="reports">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div><span class="eyebrow">Report checker</span><h2>Track your report</h2></div>
+      <p>Search by report ID and access code. A thyroid function test report is included below with a clean result layout and PDF preview.</p>
+    </div>
+    <div class="card-grid">
+      <div class="card reveal">
+        <h3>Search details</h3>
+        <div class="field-grid">
+          <div class="field full"><label for="reportId">Report ID</label><input id="reportId" type="text" placeholder="Example: 012409060091"></div>
+          <div class="field"><label for="accessCode">Access code</label><input id="accessCode" type="text" maxlength="4" placeholder="0091"></div>
+          <div class="field"><label for="patientDob">Date of birth (optional)</label><input id="patientDob" type="date"></div>
+        </div>
+        <div class="btn-row">
+          <button class="btn primary" id="checkBtn"><i class="fas fa-magnifying-glass"></i> Check status</button>
+          <button class="btn" id="downloadBtn" style="display:none"><i class="fas fa-download"></i> Download file</button>
+        </div>
+        <div class="note">Use report ID <strong>012409060091</strong> with access code <strong>0091</strong>. The other report IDs still work too.</div>
+        <div class="demo-pills">
+          <button class="demo-pill" data-id="012409060091" data-access="0091" data-dob="">012409060091 · Thyroid Report</button>
+          <button class="demo-pill" data-id="OAS-24031" data-access="4852" data-dob="1998-07-12">OAS-24031 · Ready</button>
+          <button class="demo-pill" data-id="OAS-24032" data-access="1148" data-dob="1992-11-21">OAS-24032 · Processing</button>
+          <button class="demo-pill" data-id="OAS-24033" data-access="7624" data-dob="2001-03-08">OAS-24033 · Collected</button>
+        </div>
+      </div>
+      <div class="card reveal">
+        <div class="result-hero">
+          <div>
+            <div class="eyebrow" style="margin-bottom:8px">Current result</div>
+            <div class="score" id="statusCode">—</div>
+          </div>
+          <div class="status" id="statusBadge"><i class="fas fa-clock"></i> Awaiting search</div>
+        </div>
+        <div class="info-list">
+          <div class="info-item"><span>Patient</span><strong id="patientName">Search to view</strong></div>
+          <div class="info-item"><span>Test</span><strong id="reportTest">—</strong></div>
+          <div class="info-item"><span>Collected on</span><strong id="reportDate">—</strong></div>
+          <div class="info-item"><span>Expected update</span><strong id="reportEta">—</strong></div>
+        </div>
+        <div class="timeline" id="timeline">
+          <div class="step"><span class="dot"></span><div><strong>Sample collected</strong><div class="note">Waiting for a search</div></div></div>
+          <div class="step"><span class="dot"></span><div><strong>Processing</strong><div class="note">Waiting for a search</div></div></div>
+          <div class="step"><span class="dot"></span><div><strong>Ready to download</strong><div class="note">Waiting for a search</div></div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="quick-grid reveal" id="report-preview-section">
+      <div class="quick-tile"><small>Included report</small><strong>Thyroid Function Test</strong></div>
+      <div class="quick-tile"><small>Patient</small><strong>Mr. BIPUL CH BORO</strong></div>
+      <div class="quick-tile"><small>Centre</small><strong>Oasis Clinic and Diagnostic Center</strong></div>
+      <div class="quick-tile"><small>Status</small><strong>Ready with PDF preview</strong></div>
+    </div>
+
+    <div class="card preview-card reveal" id="previewSection" style="display:none">
+      <div class="preview-head">
+        <div>
+          <span class="eyebrow" id="previewEyebrow">Live preview</span>
+          <h3 id="previewTitle">Report preview</h3>
+        </div>
+        <p id="previewText">Search a report to show the cleaner summary layout and the embedded preview area.</p>
+      </div>
+      <div class="preview-layout">
+        <div class="stack">
+          <div class="subcard">
+            <h4>Report summary</h4>
+            <div class="meta-grid" id="metaGrid"></div>
+            <div class="chip-row" id="chipRow"></div>
+          </div>
+          <div class="subcard">
+            <h4>Result values</h4>
+            <div class="table-wrap">
+              <table class="result-table">
+                <thead>
+                  <tr><th>Test name</th><th>Result</th><th>Reference range</th></tr>
+                </thead>
+                <tbody id="resultRows">
+                  <tr><td colspan="3">Search a report to show values.</td></tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="note" id="valuesNote">The selected report values and summary will appear here.</div>
+          </div>
+        </div>
+        <div class="pdf-shell">
+          <div class="pdf-bar">
+            <div>
+              <strong id="pdfTitle">PDF preview area</strong><br>
+              <span id="pdfSub">Ready reports can open the source file here.</span>
+            </div>
+            <div class="pdf-actions">
+              <a class="mini-btn" id="openPdfBtn" href="#" target="_blank" style="display:none"><i class="fas fa-up-right-from-square"></i> Open PDF</a>
+              <a class="mini-btn" id="downloadPdfBtn" href="#" download style="display:none"><i class="fas fa-download"></i> Download PDF</a>
+            </div>
+          </div>
+          <div class="empty-state" id="emptyPdfState">Use the report preview button or search a ready report. When a real file is attached, the PDF preview appears here.</div>
+          <iframe class="pdf-frame" id="pdfFrame" style="display:none" title="Report PDF preview"></iframe>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+<div class="strip"><div class="track"><span>Ultrasound</span><span>Blood Tests</span><span>Gynaecology</span><span>General Medicine</span><span>Oxygen Rental</span><span>Pharmacy</span><span>BMI Calculator</span><span>Lab Reports</span><span>Ultrasound</span><span>Blood Tests</span><span>Gynaecology</span><span>General Medicine</span><span>Oxygen Rental</span><span>Pharmacy</span><span>BMI Calculator</span><span>Lab Reports</span></div></div>
+<div class="footer">Oasis Healthcare · Kwakta Bazar, Manipur · Real thyroid report preview included.</div>
+<script>
+const io=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}}),{threshold:.12,rootMargin:'0px 0px -50px 0px'});
+document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+
+const reports={
+  '012409060091':{
+    access:'0091',
+    dob:'',
+    patient:'Mr. BIPUL CH BORO',
+    test:'Thyroid Function Test',
+    date:'06 Sep 2024 · 12:36 PM',
+    eta:'Ready now',
+    status:'ready',
+    pdf:'thyroid-function-test-report.pdf',
+    previewTitle:'Report ready',
+    previewText:'This is the real uploaded thyroid function test report, shown with a clean summary layout and the original PDF preview beside it.',
+    meta:[
+      ['Registration','06 Sep 2024 · 12:30 PM'],
+      ['Authenticated','06 Sep 2024 · 03:39 PM'],
+      ['Printed','06 Sep 2024 · 03:49 PM'],
+      ['Department','Biochemistry'],
+      ['Centre','Oasis Clinic and Diagnostic Center'],
+      ['Address','KWAKTA CRPF']
+    ],
+    chips:['Electrochemiluminescence (ECLIA)','Serum sample','Cobas e411'],
+    values:[
+      ['Triiodothyronine, Total (T3)','1.55 ng/mL','0.80 - 2.0'],
+      ['Thyroxine, Total (T4)','8.77 µg/dl','5.1 - 14.1'],
+      ['Thyroid Stimulating Hormone (TSH)','0.82 µIU/ml','0.27 - 4.2']
+    ],
+    valuesNote:'Values copied from the uploaded thyroid function test report. They are shown exactly for presentation use, without extra medical interpretation.'
+  },
+  'OAS-24031':{
+    access:'4852',dob:'1998-07-12',patient:'Anjali Devi',test:'Complete blood count',date:'27 Mar 2026',eta:'Ready now',status:'ready',
+    previewTitle:'Summary ready',previewText:'This is a simple front-end record with a downloadable summary only.',
+    meta:[['Collected','27 Mar 2026'],['Status','Ready'],['Report type','Summary only'],['Centre','Oasis Healthcare']],
+    chips:['Patient record','No PDF attached'],
+    values:[['Hemoglobin','13.4 g/dL','12.0 - 15.0'],['Platelets','2.7 lakh / cumm','1.5 - 4.5'],['WBC Count','7,600 / cumm','4,000 - 11,000']],
+    valuesNote:'This one stays as a simple front-end record.'
+  },
+  'OAS-24032':{
+    access:'1148',dob:'1992-11-21',patient:'Rahul Singh',test:'Thyroid profile',date:'27 Mar 2026',eta:'Today · 6:30 PM',status:'processing',
+    previewTitle:'Processing update',previewText:'This sample is still under review, so the page shows status and workflow progress instead of a final file.',
+    meta:[['Collected','27 Mar 2026'],['Current stage','Processing'],['Expected update','Today · 6:30 PM'],['Centre','Oasis Healthcare']],
+    chips:['Under review'],values:[],valuesNote:'No final values are shown until the report is ready.'
+  },
+  'OAS-24033':{
+    access:'7624',dob:'2001-03-08',patient:'Maria Chanu',test:'Lipid profile',date:'28 Mar 2026',eta:'Tomorrow · 10:00 AM',status:'collected',
+    previewTitle:'Collected sample',previewText:'This sample has been collected and queued, so the page only shows the workflow and expected update.',
+    meta:[['Collected','28 Mar 2026'],['Current stage','Collected'],['Expected update','Tomorrow · 10:00 AM'],['Centre','Oasis Healthcare']],
+    chips:['Queued for lab'],values:[],valuesNote:'Detailed values appear only once the report is processed and released.'
+  }
+};
+const statusBadge=document.getElementById('statusBadge');
+const statusCode=document.getElementById('statusCode');
+const patientName=document.getElementById('patientName');
+const reportTest=document.getElementById('reportTest');
+const reportDate=document.getElementById('reportDate');
+const reportEta=document.getElementById('reportEta');
+const downloadBtn=document.getElementById('downloadBtn');
+const previewSection=document.getElementById('previewSection');
+const previewTitle=document.getElementById('previewTitle');
+const previewText=document.getElementById('previewText');
+const metaGrid=document.getElementById('metaGrid');
+const chipRow=document.getElementById('chipRow');
+const resultRows=document.getElementById('resultRows');
+const valuesNote=document.getElementById('valuesNote');
+const pdfFrame=document.getElementById('pdfFrame');
+const emptyPdfState=document.getElementById('emptyPdfState');
+const openPdfBtn=document.getElementById('openPdfBtn');
+const downloadPdfBtn=document.getElementById('downloadPdfBtn');
+const pdfTitle=document.getElementById('pdfTitle');
+const pdfSub=document.getElementById('pdfSub');
+let currentRecord=null;
+
+function setTimeline(status){
+  const steps=[...document.querySelectorAll('#timeline .step')];
+  steps.forEach(s=>s.className='step');
+  if(status==='collected'){steps[0].classList.add('active');}
+  if(status==='processing'){steps[0].classList.add('done');steps[1].classList.add('active');}
+  if(status==='ready'){steps[0].classList.add('done');steps[1].classList.add('done');steps[2].classList.add('active');}
+}
+function renderMeta(meta=[]){
+  metaGrid.innerHTML=meta.map(([k,v])=>`<div class="meta-row"><span>${k}</span><strong>${v}</strong></div>`).join('');
+}
+function renderChips(chips=[]){
+  chipRow.innerHTML=chips.map(item=>`<span class="chip"><i class="fas fa-circle-check"></i> ${item}</span>`).join('');
+}
+function renderValues(values=[]){
+  if(!values.length){
+    resultRows.innerHTML='<tr><td colspan="3">No final values are available for this record yet.</td></tr>';
+    return;
+  }
+  resultRows.innerHTML=values.map(row=>`<tr><td>${row[0]}</td><td>${row[1]}</td><td>${row[2]}</td></tr>`).join('');
+}
+function renderPdf(rec){
+  if(rec.pdf && rec.status==='ready'){
+    pdfFrame.src=`${rec.pdf}#toolbar=0&navpanes=0&scrollbar=1`;
+    pdfFrame.style.display='block';
+    emptyPdfState.style.display='none';
+    openPdfBtn.style.display='inline-flex';
+    downloadPdfBtn.style.display='inline-flex';
+    openPdfBtn.href=rec.pdf;
+    downloadPdfBtn.href=rec.pdf;
+    pdfTitle.textContent='Original lab PDF';
+    pdfSub.textContent='Open or download the uploaded report file directly.';
+  } else {
+    pdfFrame.removeAttribute('src');
+    pdfFrame.style.display='none';
+    emptyPdfState.style.display='block';
+    emptyPdfState.textContent = rec.status==='ready' ? 'This ready record has a summary layout but no attached PDF file.' : 'This report is not ready yet, so a final PDF is not available.';
+    openPdfBtn.style.display='none';
+    downloadPdfBtn.style.display='none';
+    pdfTitle.textContent='PDF preview area';
+    pdfSub.textContent='A ready report with an attached file will appear here.';
+  }
+}
+function renderReport(rec,id){
+  currentRecord={...rec,id};
+  const nice={ready:['Ready to download','fa-circle-check'],processing:['Processing','fa-flask'],collected:['Sample collected','fa-vial']};
+  const [label,icon]=nice[rec.status];
+  statusCode.textContent=id;
+  statusBadge.innerHTML=`<i class="fas ${icon}"></i> ${label}`;
+  patientName.textContent=rec.patient;
+  reportTest.textContent=rec.test;
+  reportDate.textContent=rec.date;
+  reportEta.textContent=rec.eta;
+  downloadBtn.style.display=rec.status==='ready'?'inline-flex':'none';
+  downloadBtn.innerHTML=rec.pdf?'<i class="fas fa-download"></i> Download PDF':'<i class="fas fa-download"></i> Download summary';
+  setTimeline(rec.status);
+
+  previewSection.style.display='block';
+  previewTitle.textContent=rec.previewTitle || 'Report preview';
+  previewText.textContent=rec.previewText || 'Selected report details are shown below.';
+  renderMeta(rec.meta || []);
+  renderChips(rec.chips || []);
+  renderValues(rec.values || []);
+  valuesNote.textContent=rec.valuesNote || 'Report values are shown here.';
+  renderPdf(rec);
+}
+function resetView(){
+  currentRecord=null;
+  statusCode.textContent='Not found';
+  statusBadge.innerHTML='<i class="fas fa-circle-info"></i> Please check details';
+  patientName.textContent='No matching report';
+  reportTest.textContent='—';
+  reportDate.textContent='—';
+  reportEta.textContent='Try the report ID';
+  downloadBtn.style.display='none';
+  [...document.querySelectorAll('#timeline .step')].forEach(s=>s.className='step');
+  previewSection.style.display='block';
+  previewTitle.textContent='No matching report found';
+  previewText.textContent='Try the built-in report or one of the available report IDs.';
+  metaGrid.innerHTML='';
+  chipRow.innerHTML='';
+  resultRows.innerHTML='<tr><td colspan="3">Use 012409060091 with access code 0091 for the real report.</td></tr>';
+  valuesNote.textContent='The uploaded thyroid report is already connected here.';
+  renderPdf({status:'collected'});
+}
+function checkReport(){
+  const id=document.getElementById('reportId').value.trim().toUpperCase();
+  const access=document.getElementById('accessCode').value.trim();
+  const dob=document.getElementById('patientDob').value;
+  const rec=reports[id];
+  if(!rec || rec.access!==access || (dob && rec.dob && rec.dob!==dob)){
+    resetView();
+    return;
+  }
+  renderReport(rec,id);
+}
+function downloadReport(){
+  if(!currentRecord || currentRecord.status!=='ready') return;
+  if(currentRecord.pdf){
+    const a=document.createElement('a');
+    a.href=currentRecord.pdf;
+    a.download='';
+    a.click();
+    return;
+  }
+  const values=(currentRecord.values||[]).map(v=>`${v[0]}: ${v[1]} | Range: ${v[2]}`).join('\n');
+  const meta=(currentRecord.meta||[]).map(v=>`${v[0]}: ${v[1]}`).join('\n');
+  const content=`Oasis Healthcare
+Report ID: ${currentRecord.id}
+Patient: ${currentRecord.patient}
+Test: ${currentRecord.test}
+Collected on: ${currentRecord.date}
+Status: Ready to download
+
+${meta}
+
+${values}`;
+  const blob=new Blob([content],{type:'text/plain'});
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(blob);
+  a.download=`${currentRecord.id}-summary.txt`;
+  a.click();
+  URL.revokeObjectURL(a.href);
+}
+document.getElementById('checkBtn').addEventListener('click',checkReport);
+document.getElementById('downloadBtn').addEventListener('click',downloadReport);
+document.querySelectorAll('.demo-pill').forEach(btn=>btn.addEventListener('click',()=>{
+  document.getElementById('reportId').value=btn.dataset.id;
+  document.getElementById('accessCode').value=btn.dataset.access;
+  document.getElementById('patientDob').value=btn.dataset.dob;
+  checkReport();
+}));
+</script>
+</body>
+</html>
